@@ -4,6 +4,3 @@ node_modules
 # log files and compressed files
 *.log
 *.gz
-
-# ignore db data folder
-data/**
