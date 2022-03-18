@@ -16,9 +16,11 @@ services:
     expose:
       - 27017
     volumes:
-      - ./data/db:/data/db
+      - data_users:/data/db
     environment:
       - MONGO_INITDB_ROOT_USERNAME=user
       - MONGO_INITDB_ROOT_PASSWORD=passw
       - MONGO_INITDB_DATABASE=myapp
+volumes:
+  data_users:
 
