@@ -32,3 +32,17 @@ jobs:
     - run: npm ci
     - run: npm run build --if-present
     - run: npm test
+    
+    # File: .github/workflows/workflow.yml
+  devflow:
+    runs-on: ubuntu-latest
+    steps:
+    
+    - uses: okteto/context@latest
+      with:
+        token: ${{ secrets.OKTETO_TOKEN }}
+
+    - name: "Push changes"
+      uses: okteto/push@latest
+      with:
+        namespace: lordchunk
