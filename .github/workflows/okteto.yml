@@ -2,8 +2,6 @@ on:
   # Only run on merges/pushes to the main branch
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
 
 name: Okteto deploy
 
