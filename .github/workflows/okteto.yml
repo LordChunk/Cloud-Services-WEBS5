@@ -25,5 +25,5 @@ jobs:
     - name: "Trigger the pipeline"
       uses: okteto/pipeline@latest
       with:
-        name: pr-${{ github.event.number }}
+        name: devops-job-mark
         timeout: 8m
