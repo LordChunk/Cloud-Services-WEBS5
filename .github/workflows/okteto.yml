@@ -1,7 +1,9 @@
 on:
+  # Only run on merges/pushes to the main branch
+  push:
+    branches: [ main ]
   pull_request:
-    branches:
-      - main
+    branches: [ main ]
 
 name: Okteto deploy
 
@@ -27,4 +29,3 @@ jobs:
       with:
         name: pr-${{ github.event.number }}
         timeout: 8m
-        skipIfExists: true
