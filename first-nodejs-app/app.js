@@ -4,10 +4,23 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
+// Setup DB conn
+require('./services/database').getDb();
+
+// Setup prometheus
+const promBundle = require('express-prom-bundle');
+
+const metricsMiddleware = promBundle({
+  includePath: true,
+  includeStatusCode: true,
+  normalizePath: true,
+  promClient: {
+    collectDefaultMetrics: {},
+  },
+});
+
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
-
-require('./services/database').getDb();
 
 const app = express();
 
@@ -20,6 +33,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Startup Prometheus
+app.use(metricsMiddleware);
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
