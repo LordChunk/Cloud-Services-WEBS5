@@ -1,0 +1,6 @@
+groups:
+  - name: StandardAlerts
+    rules: 
+      - alert: "On API down"
+        expr: up{job="web"} < 1
+        for: 20s
