@@ -33,7 +33,7 @@ services:
   grafana:
     build: ./first-nodejs-app/grafana
     ports:
-      - 3000:3000
+      - 3001:3000
 volumes:
   prometheus-data:
   data_users:
