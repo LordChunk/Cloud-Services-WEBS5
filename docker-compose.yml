@@ -21,6 +21,18 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=user
       - MONGO_INITDB_ROOT_PASSWORD=passw
       - MONGO_INITDB_DATABASE=myapp
+  rabbitmq:
+    image: rabbitmq:3-management
+    restart: always
+    expose:
+      - 5672
+    ports:
+      - 15672:15672
+    volumes:
+      - data_rabbitmq:/var/lib/rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=admin
   prometheus:
     image: prom/prometheus
     restart: always
@@ -35,6 +47,7 @@ services:
     ports:
       - 3001:3000
 volumes:
-  prometheus-data:
   data_users:
+  data_rabbitmq:
+  prometheus-data:
 
