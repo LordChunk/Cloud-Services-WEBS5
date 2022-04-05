@@ -1,12 +1,12 @@
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
-const blogRoute = require('./routes.js');
+const authRoutes = require('./routes/auth');
 const cors = require('cors');
 
 app.use(cors())
 app.use(express.json());
-app.use('/blog',blogRoute)
+app.use('/auth',authRoutes)
 
 
 app.listen(port, () => {

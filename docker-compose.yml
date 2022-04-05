@@ -1,26 +1,40 @@
 services:
-  web:
-    image: devops-web
+  # Authentication
+  auth:
+    image: cloud-auth
     depends_on:
-    - mongodb
+    - mongodb_auth
     build: 
-      context: ./first-nodejs-app
-    ports:
-      - "3000:3000" # external port: internal port
+      context: ./authentication
+    expose:
+      - 3000
     environment:
-      MONGO_URL: mongodb://user:passw@mongodb:27017
-      DB_NAME: myapp
-  mongodb:
+      MONGO_URL: mongodb://user:passw@mongodb_auth:27017
+      DB_NAME: auth
+  mongodb_auth:
     image: mongo
     restart: always
     expose:
       - 27017
     volumes:
-      - data_users:/data/db
+      - data_auth:/data/db
     environment:
       - MONGO_INITDB_ROOT_USERNAME=user
       - MONGO_INITDB_ROOT_PASSWORD=passw
-      - MONGO_INITDB_DATABASE=myapp
+      - MONGO_INITDB_DATABASE=auth
+  # Gateway
+  gateway:
+    image: cloud-gateway
+    depends_on:
+    - auth
+    restart: always
+    ports:
+      - "8070:80" # external port: internal port
+    environment:
+    # List all the services that the gateway should be able to access
+     - AUTH_ENDPOINT=http://auth:80
+
+  # Service bus
   rabbitmq:
     image: rabbitmq:3-management
     restart: always
@@ -33,6 +47,8 @@ services:
     environment:
       - RABBITMQ_DEFAULT_USER=admin
       - RABBITMQ_DEFAULT_PASS=admin
+
+  # Logging service
   prometheus:
     image: prom/prometheus
     restart: always
@@ -48,6 +64,7 @@ services:
       - 3001:3000
 volumes:
   data_users:
+  data_auth:
   data_rabbitmq:
   prometheus-data:
 
