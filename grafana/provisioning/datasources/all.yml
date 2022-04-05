@@ -1,7 +1,7 @@
 datasources:
   - name: 'Prometheus'
     type: 'prometheus'
-    acces: 'proxy'
+    access: 'proxy'
     org_id: 1
     url: http://prometheus:9090
     is_default: true

@@ -31,7 +31,7 @@ services:
       - 9090:9090
     command: --web.enable-lifecycle --config.file=/etc/prometheus/prometheus.yml
   grafana:
-    build: ./first-nodejs-app/grafana
+    build: ./grafana
     ports:
       - 3001:3000
 volumes:
