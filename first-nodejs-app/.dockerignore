@@ -1,6 +1,0 @@
-# node modules
-node_modules
-
-# log files and compressed files
-*.log
-*.gz

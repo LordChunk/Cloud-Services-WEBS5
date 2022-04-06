@@ -23,7 +23,8 @@
     "opossum": "^6.3.0",
     "passport": "^0.5.2",
     "passport-jwt": "^4.0.0",
-    "prom-client": "^14.0.1"
+    "prom-client": "^14.0.1",
+    "cloud-shared": "file:../shared"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"

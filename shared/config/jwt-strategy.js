@@ -8,7 +8,7 @@ const options = {
 
 const strategy = new JwtStrategy(options, (jwt_payload, done) => {
   console.log('payload received', jwt_payload);
-  jwt_payload.
+  // jwt_payload
   done(null, jwt_payload);
 });
 
