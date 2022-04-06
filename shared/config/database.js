@@ -1,9 +1,11 @@
 const mongoose = require('mongoose');
 
 // Export db conn based on env
-module.exports = () => {
-  // This prevents the gateway from crashing as our current ECMA version does not support module lazy loading :))
-  if(process.env.MONGO_URL !== undefined) {
-    mongoose.connect(process.env.MONGO_URL)
-  }
+module.exports = {
+  connect: () => {
+      console.log('Connecting to MongoDB');
+      mongoose.connect(process.env.MONGO_URL)
+        .then(() => console.log('Connected to MongoDB'))
+        .catch(err => console.error('Could not connect to MongoDB', err));
+  } 
 } 

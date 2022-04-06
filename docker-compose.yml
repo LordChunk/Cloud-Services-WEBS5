@@ -9,15 +9,18 @@ services:
       dockerfile: ./auth/Dockerfile
     expose:
       - 3000
+    ports:
+      - "8071:3000"
     environment:
       MONGO_URL: "mongodb://mongodb_auth:27017/auth"
       JWT_SECRET: secret # secret key for jwt
       API_KEY: secret_api_key
   mongodb_auth:
     image: mongo
-    restart: always
     expose:
       - 27017
+    ports:
+      - "7071:27017"
     volumes:
       - data_auth:/data/db
     environment:
@@ -30,7 +33,6 @@ services:
     build:
       context: .
       dockerfile: ./gateway/Dockerfile
-    restart: always
     ports:
       - "8070:3000" # external port: internal port
     environment:
@@ -42,7 +44,6 @@ services:
   # Service bus
   rabbitmq:
     image: rabbitmq:3-management
-    restart: always
     expose:
       - 5672
     ports:
