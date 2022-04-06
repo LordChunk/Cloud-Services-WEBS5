@@ -7,7 +7,7 @@ RUN npm i
 
 # Copy project files
 WORKDIR /app  
-COPY ./gateway /app
+COPY ./auth /app
 RUN npm i
 
 EXPOSE 3000  

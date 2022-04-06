@@ -1,11 +1,12 @@
+// Startup db connection
+require('cloud-shared').Database();
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
+
 const cors = require('cors');
 const shared = require('cloud-shared');
-
 const passport = require('passport');
-// const authService = require('./auth-service');
 
 // Generic Express setup
 app.use(cors());
@@ -18,14 +19,13 @@ app.use(passport.initialize());
 // JWT header injection setup
 const { default: axios } = require('axios');
 axios.interceptors.request.use(shared.Interceptors.request);
-axios.interceptors.response.use(shared.Interceptors.opaqueResponse);
+axios.interceptors.response.use(shared.Interceptors.internalResponse);
 
-// Register imported routes
-app.use('/auth',require('./routes/auth'))
+// Setup registration
+app.post('/register', passport.authenticate('jwt', {session: false}), (req, res) => {
+
+});
 
 
-app.listen(port, () => {
-    console.log('Gateway is up on http://localhost:' + port)
-})
-
+app.listen(port);
 module.exports = app;

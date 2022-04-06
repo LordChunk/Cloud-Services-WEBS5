@@ -5,12 +5,14 @@ services:
     depends_on:
     - mongodb_auth
     build: 
-      context: ./authentication
+      context: .
+      dockerfile: ./auth/Dockerfile
     expose:
       - 3000
     environment:
-      MONGO_URL: mongodb://user:passw@mongodb_auth:27017
-      DB_NAME: auth
+      MONGO_URL: "mongodb://mongodb_auth:27017/auth"
+      JWT_SECRET: secret # secret key for jwt
+      API_KEY: secret_api_key
   mongodb_auth:
     image: mongo
     restart: always
@@ -19,8 +21,6 @@ services:
     volumes:
       - data_auth:/data/db
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=user
-      - MONGO_INITDB_ROOT_PASSWORD=passw
       - MONGO_INITDB_DATABASE=auth
   # Gateway
   gateway:
@@ -28,7 +28,8 @@ services:
     # depends_on:
     # - auth
     build:
-      context: ./gateway
+      context: .
+      dockerfile: ./gateway/Dockerfile
     restart: always
     ports:
       - "8070:3000" # external port: internal port
@@ -36,7 +37,7 @@ services:
      - JWT_SECRET=secret # secret key for jwt
      - API_KEY=secret_api_key # API key for backend services
     # List all the services that the gateway should be able to access
-     - AUTH_ENDPOINT=http://auth:80
+     - AUTH_ENDPOINT=http://auth:3000
 
   # Service bus
   rabbitmq:

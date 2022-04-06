@@ -16,13 +16,23 @@ const circuitBreaker = new CircuitBreaker(axios.get, options);
 
 
 router.post('/login', (req, res) => {
-    const { username, password } = req.body;
     const url = `${endpoint}/login`;
 
-    circuitBreaker.fire(url, {
-        username,
-        password
-    })
+    circuitBreaker.fire(url, req.body)
+    .then(response => {
+        res.status(200).json(response.data);
+    }
+    )
+    .catch(error => {
+        res.status(500).json(error);
+    }
+    )
+});
+
+router.post('/register', (req, res) => {
+    const url = `${endpoint}/register`;
+    
+    circuitBreaker.fire(url, req.body)
     .then(response => {
         res.status(200).json(response.data);
     }
