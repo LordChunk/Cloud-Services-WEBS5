@@ -4,37 +4,28 @@ const port = process.env.PORT || 3000;
 const cors = require('cors');
 
 const passport = require('passport');
-const JwtStrategy = require('passport-jwt').Strategy;
-const ExtractJWT = require('passport-jwt').ExtractJwt;
 const authService = require('./auth-service');
+const passportStrategy = require('./config/jwt-strategy');
 
-// Routes
-const authRoutes = require('./routes/auth');
-
+// Generic Express setup
 app.use(cors());
 app.use(express.json());
 
-// Setup Passport
-const options = {
-    jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-    secretOrKey: process.env.JWT_SECRET
-};
-
-const strategy = new JwtStrategy(options, (jwt_payload, done) => {
-    console.log('payload received', jwt_payload);
-    jwt_payload.
-    done(null, jwt_payload);
-});
-
-passport.use(strategy);
+// Passport setup
+passport.use(passportStrategy);
 app.use(passport.initialize());
 
-// Register routes
-app.use('/auth',authRoutes)
+// JWT header injection setup
+const { default: axios } = require('axios');
+axios.interceptors.request.use(require('./config/axios-jwt-interceptor').request);
+axios.interceptors.response.use(require('./config/axios-jwt-interceptor').response);
+
+// Register imported routes
+app.use('/auth',require('./routes/auth'))
 
 
 app.listen(port, () => {
-    console.log('Gateway is up on localhost:' + port)
+    console.log('Gateway is up on http://localhost:' + port)
 })
 
 module.exports = app;

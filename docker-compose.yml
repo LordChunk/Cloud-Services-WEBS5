@@ -34,6 +34,7 @@ services:
       - "8070:3000" # external port: internal port
     environment:
      - JWT_SECRET=secret # secret key for jwt
+     - API_KEY=secret_api_key # API key for backend services
     # List all the services that the gateway should be able to access
      - AUTH_ENDPOINT=http://auth:80
 

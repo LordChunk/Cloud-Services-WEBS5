@@ -14,8 +14,6 @@ const options = {
 
 const circuitBreaker = new CircuitBreaker(axios.get, options);
 
-// Verify JWT token of incoming request
-
 
 router.post('/login', (req, res) => {
     const { username, password } = req.body;
