@@ -1,14 +1,14 @@
 FROM node:16  
 
 # Copy shared files
-WORKDIR /shared
-COPY ../shared /shared
-RUN npm i
+# COPY ./shared /shared
+# WORKDIR /shared
+# RUN npm i
 
 # Copy project files
 WORKDIR /app  
-COPY . /app  
-RUN npm i  
+COPY . .  
+RUN npm install
 
 EXPOSE 3000  
 

@@ -25,12 +25,15 @@ services:
   # Gateway
   gateway:
     image: cloud-gateway
-    depends_on:
-    - auth
+    # depends_on:
+    # - auth
+    build:
+      context: ./gateway
     restart: always
     ports:
-      - "8070:80" # external port: internal port
+      - "8070:3000" # external port: internal port
     environment:
+     - JWT_SECRET=secret # secret key for jwt
     # List all the services that the gateway should be able to access
      - AUTH_ENDPOINT=http://auth:80
 

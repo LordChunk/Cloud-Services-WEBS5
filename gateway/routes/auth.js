@@ -4,6 +4,8 @@ const router         = new express.Router();
 const axios          = require('axios');
 const CircuitBreaker = require('opossum');
 
+const endpoint = process.env.AUTH_ENDPOINT;
+
 const options = {
   timeout: 3000, // If our function takes longer than 3 seconds, trigger a failure
   errorThresholdPercentage: 50, // When 50% of requests fail, trip the circuit
@@ -12,10 +14,12 @@ const options = {
 
 const circuitBreaker = new CircuitBreaker(axios.get, options);
 
+// Verify JWT token of incoming request
+
 
 router.post('/login', (req, res) => {
     const { username, password } = req.body;
-    const url = `${process.env.API_URL}/login`;
+    const url = `${endpoint}/login`;
 
     circuitBreaker.fire(url, {
         username,
@@ -31,3 +35,4 @@ router.post('/login', (req, res) => {
     )
 });
 
+module.exports = router    
