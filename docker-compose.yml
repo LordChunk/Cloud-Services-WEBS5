@@ -1,30 +1,30 @@
 services:
-  #Target
-  target:
-    image: cloud-target
-    depends_on:
-    - mongodb_target
-    build: 
-      context: .
-      dockerfile: ./target/Dockerfile
-    expose:
-      - 3000
-    ports:
-      - "8072:3000"
-    environment:
-      MONGO_URL: "mongodb://mongodb_target:27017/target"
-      JWT_SECRET: secret # secret key for jwt
-      API_KEY: secret_api_key
-  mongodb_target:
-    image: mongo
-    expose:
-      - 27017
-    ports:
-      - "7072:27017"
-    volumes:
-      - data_target:/data/db
-    environment:
-      - MONGO_INITDB_DATABASE=target
+  # Target
+  # target:
+  #   image: cloud-target
+  #   depends_on:
+  #   - mongodb_target
+  #   build: 
+  #     context: .
+  #     dockerfile: ./target/Dockerfile
+  #   expose:
+  #     - 3000
+  #   ports:
+  #     - "8072:3000"
+  #   environment:
+  #     MONGO_URL: "mongodb://mongodb_target:27017/target"
+  #     JWT_SECRET: secret # secret key for jwt
+  #     API_KEY: secret_api_key
+  # mongodb_target:
+  #   image: mongo
+  #   expose:
+  #     - 27017
+  #   ports:
+  #     - "7072:27017"
+  #   volumes:
+  #     - data_target:/data/db
+  #   environment:
+  #     - MONGO_INITDB_DATABASE=target
   # Authentication
   auth:
     image: cloud-auth
