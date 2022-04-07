@@ -75,7 +75,9 @@ router.post('/login', (req, res) => {
         });
       }
       // Create opaque token
-      const token = jwt.sign({}, process.env.JWT_SECRET);
+      const token = jwt.sign({
+        uid: user.uid,
+      }, process.env.JWT_SECRET);
 
       // Remove hash and salt from user object
       user.hash = undefined;
