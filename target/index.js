@@ -1,67 +1,30 @@
-const express      = require('express');
-require('dotenv').config(); 
-const app          = express();
-const cors         = require("cors");
-const bodyparser   = require("body-parser");
-const port         = process.env.PORT || 3015;
+const express = require('express');
+const app = express();
+const port = process.env.PORT || 3015;
+const cors = require('cors');
+const passport = require('passport');
+const shared = require('cloud-shared');
 
-async function startup(){ 
-    try {
- 
-    }catch (error) {
-        console.log ('err in publisher : ' +error);
-    }
-}
+// Generic Express setup
+app.use(cors());
+app.use(express.json());
 
-//Je kunt hier passport-jwt gebruiken om de jwt uit te lezen
-//voor de api-key
-//https://www.npmjs.com/package/passport-jwt
-const passport     = require('passport');
-const jwt          = require('jsonwebtoken');
-const JwtStrategy  = require('passport-jwt').Strategy;
-const ExtractJwt   = require('passport-jwt').ExtractJwt;
+// Passport setup
+passport.use(shared.JwtStrategy);
+app.use(passport.initialize());
 
-app.use(bodyparser.json());
+// JWT header injection setup
+const { default: axios } = require('axios');
+axios.interceptors.request.use(shared.Interceptors.request);
+axios.interceptors.response.use(shared.Interceptors.internalResponse);
 
-//Een target aanmaken
-app.post('/target',(req,res)=>{
-    //check if the api-key is correct
-    if(data.apiKey !== process.env.API_KEY){
-        res.status(401).send('Unauthorized');
-    }
+// Register routes
+app.use('/', require('./routes'));
 
-    // get the data from the request
-    const data = req.body;
 
-    //check if the data is correct
-    if(!data.email || !data.hash || !data.salt){
-        res.status(400).send('Bad request');
-    }
+app.listen(port,  () => {
+  console.log('Started service at: ' + new Date().toLocaleString())
+  console.log('Gateway is up on http://localhost:' + port)
+});
 
-    //create a new target
-    const target = new Target({
-        name: data.name,
-        desc: data.desc,
-        img:
-        {
-            data: Buffer.from(data.img.data),
-            contentType: data.img.contentType
-        }
-    });
-
-    //save the target
-    target.save((err)=>{
-        if(err){
-            res.status(500).send('Internal server error');
-        }
-        res.status(201).send('Target created');
-    });
-
-    //do a fanout to all the clients
-    io.emit('target',target);
-
-})
-
-app.listen(port, () => {
-    console.log('Server is up on port ' + port);
-})
+module.exports = app;

@@ -1,13 +1,10 @@
 const Mongoose = require('mongoose');
 
 const targetSchema = new Mongoose.Schema({
-    name: String,
-    desc: String,
-    img:
-    {
-        data: Buffer,
-        contentType: String
-    }
+    uid:{type: String, required: true, unique: true},
+    name:{type: String, required: true, maxlength: 50},
+    desc:{type: String, required: true},
+    img:{type: String, required: true}
 })
 
 const Target = Mongoose.model('Target',targetSchema);
