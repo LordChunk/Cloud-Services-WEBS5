@@ -15,9 +15,16 @@ const options = {
 
 const circuitBreaker = new CircuitBreaker(callService, options);
 
+const axiosInstance = axios.create({
+    baseURL: formatWithSlashes(endpoint),
+    headers: {
+        'Content-Type': 'application/json'
+    }
+});
+
 
 router.post('/login', (req, res) => {
-    circuitBreaker.fire("post", endpoint, 'login', req.body)
+    circuitBreaker.fire("post", 'login', req.body)
         .then(response => {
             res.status(200).json(response.data);
         })
@@ -26,8 +33,8 @@ router.post('/login', (req, res) => {
         })
 });
 
-router.post('/register', passport.authenticate('jwt'), (req, res) => {
-    circuitBreaker.fire("post", endpoint, 'register', req.body)
+router.post('/register', (req, res) => {
+    circuitBreaker.fire("post", 'register', req.body)
         .then(response => {
             res.status(200).json(response.data);
         })
@@ -38,20 +45,13 @@ router.post('/register', passport.authenticate('jwt'), (req, res) => {
 });
 
 // Function for handling network requests
-function callService(method, serviceAddress, resource, body) {
-    return axios({
-        method: method,
-        url: formatWithSlashes(serviceAddress) + resource,
-        data: body,
-        headers: {
-            'Content-Type': 'application/json',
-        }
-    });
+function callService(method, resource, body) {
+    return axiosInstance[method](resource, body);
 }
 
 //Helper functie om het gedoe met slashes te voorkomen
-function formatWithSlashes(serviceAddress) {
-    return (serviceAddress.endsWith('/')) ? serviceAddress : '/';
+function formatWithSlashes(endpoint) {
+    return (endpoint.endsWith('/')) ? endpoint : '/';
 }
 
 module.exports = router    

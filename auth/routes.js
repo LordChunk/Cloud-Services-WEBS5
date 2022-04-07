@@ -13,7 +13,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 // Setup registration
-router.post('/register', async (req, res) => {
+router.post('/register', (req, res) => {
   console.log('Registering user...');	
   const body = req.body;
   const salt = bcrypt.genSaltSync(10);
@@ -27,8 +27,17 @@ router.post('/register', async (req, res) => {
     isOwner: body.isOwner,
   });
 
-  const ret = await user.save();
-  res.status(201).json(ret);
+  user.save()
+    .then(user => {
+      console.log("Registered user");
+      res.status(201).json(user);
+    })
+    .catch(err => {
+      console.log("Error registering user");
+      res.status(500).json({
+        error: err
+      });
+    });
 });
 
 router.get('/users', (req, res) => {

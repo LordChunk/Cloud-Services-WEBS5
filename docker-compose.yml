@@ -28,8 +28,6 @@ services:
   # Gateway
   gateway:
     image: cloud-gateway
-    depends_on:
-    - auth
     build:
       context: .
       dockerfile: ./gateway/Dockerfile
