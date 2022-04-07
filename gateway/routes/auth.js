@@ -3,9 +3,8 @@ const express = require('express');
 const router = new express.Router();
 const passport = require('passport');
 
-const CircuitBreakerService = require('../services/circuit-breaker-service');
-const endpoint = process.env.AUTH_ENDPOINT;
-const circuitBreaker = new CircuitBreakerService(endpoint).circuitBreaker
+const circuitBreaker = require('../services/circuit-breaker-service')
+    .createNewCircuitBreaker(process.env.AUTH_ENDPOINT);
 
 
 router.post('/login', (req, res) => {

@@ -1,6 +1,7 @@
 const axios = require('axios');
 const CircuitBreaker = require('opossum');
 
+// This singleton service is used to create a CircuitBreaker instance for each microservice
 class CircuitBreakerService {
   options = {
     timeout: 3000, // If our function takes longer than 3 seconds, trigger a failure
@@ -8,20 +9,23 @@ class CircuitBreakerService {
     resetTimeout: 3000 // After 3 seconds, try again.
   };
 
-  axiosInstance = axios.create({
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  });
+  // Returns a new CircuitBreaker instance which should be used for one microservice
+  createNewCircuitBreaker(endpoint) {
+    // Setup an Axios instance with the base URL and headers
+    const axiosInstance = axios.create({
+      baseURL: this.formatWithSlashes(endpoint),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
 
-  circuitBreaker = new CircuitBreaker(
-    (method, resource, body) => {
-      return this.axiosInstance[method](resource, body);
-    }, 
-    this.options);
-  
-  constructor(endpoint) {
-    this.axiosInstance.defaults.baseURL = this.formatWithSlashes(endpoint);
+    return new CircuitBreaker(
+      // Universal function to call the endpoint using Axios
+      (method, resource, body) => {
+        return axiosInstance[method](resource, body);
+      },
+      this.options
+    );
   }
 
   // Helper function to add a trailing slash to an endpoint if it doesn't exist
@@ -30,4 +34,4 @@ class CircuitBreakerService {
   }
 }
 
-module.exports = CircuitBreakerService;
+module.exports = new CircuitBreakerService();
