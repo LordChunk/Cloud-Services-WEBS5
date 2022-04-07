@@ -1,13 +1,14 @@
 // Startup db connection
-require('cloud-shared').Database.connect();
 const mongoose = require('mongoose');
+const shared = require('cloud-shared');
+shared.Database(mongoose);
+
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
 const cors = require('cors');
-const shared = require('cloud-shared');
 const passport = require('passport');
-;
+
 const User = require('./models/user');
 const bcrypt = require('bcryptjs');
 
@@ -40,12 +41,23 @@ app.post('/register', async (req, res) => {
   });
 
   const ret = await user.save();
-  res.json(ret);
+  res.status(201).json(ret);
 });
 
-app.get('/users', async (req, res) => {
+app.get('/users', (req, res) => {
   console.log('Getting users...');
-  res.send(authService.getUsers());
+  User.find()
+    .then(users => {
+      console.log("Found users");
+      res.status(200).json(users);
+    })
+    .catch(err => {
+      console.log("Error getting users");
+      res.status(500).json({
+        error: err
+      });
+    }
+  );
 });
 
 app.post('/login', (req, res) => {

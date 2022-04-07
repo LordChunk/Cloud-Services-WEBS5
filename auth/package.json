@@ -27,8 +27,5 @@
     "passport": "^0.5.2",
     "passport-jwt": "^4.0.0",
     "prom-client": "^14.0.1"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.15"
   }
 }

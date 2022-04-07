@@ -34,8 +34,7 @@ const authService = {
     });
   },
   getUsers: async () => {
-    // Return users as promise
-    return await User.find({});
+
   }
 }
 
