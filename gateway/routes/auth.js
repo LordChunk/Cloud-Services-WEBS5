@@ -45,7 +45,6 @@ function callService(method, serviceAddress, resource, body) {
         data: body,
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + process.env.JWT_TOKEN
         }
     });
 }

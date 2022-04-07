@@ -18,6 +18,7 @@ const interceptor = {
         return response;
     },
     opaqueResponse: function (response) {
+        // TODO: Check auth state of user
         // Sign opaque header and add to response headers
         const opaqueHeader = jwt.sign({}, process.env.JWT_SECRET);
         config.headers.Authorization = `Bearer ${opaqueHeader}`;
