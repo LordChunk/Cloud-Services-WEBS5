@@ -1,4 +1,4 @@
-const createError = require('http-errors')
+const createError = require('http-errors');
 
 class RequestHandler {
   constructor(circuitBreaker) {
@@ -17,10 +17,12 @@ class RequestHandler {
     return (req, res, next) => {
       this.circuitBreaker.fire(method, path || req.url, req.body, req.user)
         .then(response => res.status(response.status).json(response.data))
-        .catch(error => next(createError(
-          error.response?.status || 500,
-          error
-        )));
+        .catch(error => {
+          next(createError(
+            error.response?.status || 500,
+            error.message || 'Internal server error',
+          ))
+        });
     }
   }
 
