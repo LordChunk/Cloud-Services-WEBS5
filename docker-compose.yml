@@ -1,4 +1,30 @@
 services:
+  # Like
+  like:
+    image: cloud-like
+    depends_on:
+    - mongodb_like
+    build: 
+      context: .
+      dockerfile: ./like/Dockerfile
+    expose:
+      - 3000
+    ports:
+      - "7073:3000"
+    environment:
+      MONGO_URL: "mongodb://mongodb_like:27017/like"
+      JWT_SECRET: secret # secret key for jwt
+      API_KEY: secret_api_key
+  mongodb_like:
+    image: mongo
+    expose:
+      - 27017
+    ports:
+      - "8073:27017"
+    volumes:
+      - data_like:/data/db
+    environment:
+      - MONGO_INITDB_DATABASE=like
   # Target
   target:
     image: cloud-target
@@ -93,6 +119,7 @@ services:
     ports:
       - 3001:3000
 volumes:
+  data_like:
   data_target:
   data_auth:
   data_rabbitmq:
