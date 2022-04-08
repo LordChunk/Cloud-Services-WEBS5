@@ -14,7 +14,7 @@ const interceptor = {
     internalResponse: function (response) {
         // Sign opaque header and add to response headers
         const token = jwt.sign({ apiKey }, process.env.JWT_SECRET);
-        config.headers.Authorization = `Bearer ${opaqueHeader}`;
+        config.headers.Authorization = `Bearer ${token}`;
         return response;
     },
     opaqueResponse: function (response) {
