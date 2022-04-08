@@ -15,9 +15,12 @@ class RequestHandler {
     method = method.toLowerCase();
 
     return (req, res, next) => {
-      this.circuitBreaker.fire(method, path, req.body)
+      this.circuitBreaker.fire(method, path, req.body, req.user)
         .then(response => res.status(response.status).json(response.data))
-        .catch(error => next(createError(error.response.status, error.message)));
+        .catch(error => next(createError(
+          error.response?.status || 500,
+          error
+        )));
     }
   }
 
