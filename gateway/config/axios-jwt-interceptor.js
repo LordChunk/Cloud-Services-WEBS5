@@ -4,10 +4,12 @@ const apiKey = process.env.API_KEY;
 
 // Axios JWT Interceptor
 const interceptor = function (config) {
-    // Fetch user id from request if present and add to JWT payload
+    // Get X-Interceptor-Uid header and unset it
+    const uid = config.headers['X-Interceptor-Uid'];
+    delete config.headers['X-Interceptor-Uid'];
 
     // Sign key and add to headers
-    const token = jwt.sign({ apiKey }, process.env.JWT_SECRET);
+    const token = jwt.sign({ apiKey, uid }, process.env.JWT_SECRET);
     config.headers.Authorization = `Bearer ${token}`;
     return config;
 };

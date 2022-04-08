@@ -9,7 +9,10 @@ const options = {
 const InternalStrategy = new JwtStrategy(options, (jwt_payload, done) => {
   // Check if the apiKey is valid or return 401
   if (jwt_payload.apiKey === process.env.API_KEY) {
-    return done(null, jwt_payload);
+    // Extract user id from payload
+    return done(null, {
+      uid: jwt_payload.uid
+    });
   } else {
     return done(null, false);
   }

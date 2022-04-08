@@ -7,10 +7,18 @@ shared.Database(mongoose);
 const express = require('express');
 const router = new express.Router();
 
+// Import passport
+const passport = require('passport');
+const strategy = require('cloud-shared').JwtStrategy.InternalStrategy
+
 // Import route specific dependencies
 const User = require('./models/user');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+
+// Passport setup
+passport.use(strategy);
+router.use(passport.initialize());
 
 // Setup registration
 router.post('/register', (req, res) => {
@@ -19,7 +27,6 @@ router.post('/register', (req, res) => {
   const salt = bcrypt.genSaltSync(10);
   const user = new User({
     // Generate UID
-    uid: mongoose.Types.ObjectId(),
     email: body.email,
     // Hash password
     hash: bcrypt.hashSync(body.password, salt),
@@ -60,7 +67,7 @@ router.post('/login', (req, res) => {
       }
       // Create opaque token
       const token = jwt.sign({
-        uid: user.uid,
+        uid: user._id,
       }, process.env.JWT_SECRET);
 
       // Remove hash and salt from user object
@@ -96,6 +103,10 @@ router.get('/users', (req, res) => {
       });
     }
   );
+});
+
+router.post('/get-user-id', passport.authenticate('jwt', { session: false }), (req, res) => {
+  res.status(200).json(req.user);
 });
 
 module.exports = router;

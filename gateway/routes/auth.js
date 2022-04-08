@@ -16,7 +16,6 @@ router.use(passport.initialize());
 
 router.post('/login', requestHandler.send('post', 'login'));
 router.post('/register', requestHandler.send('post', 'register'));
-router.post('/test', passport.authenticate('jwt', { session: false }), requestHandler.send('post', 'test'));
-router.post('/test-2', requestHandler.send('post', 'test'));
+router.post('/get-user-id', passport.authenticate('jwt', { session: false }), requestHandler.send('post', 'get-user-id'));
 
 module.exports = router    
