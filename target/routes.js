@@ -11,30 +11,27 @@ const router = new express.Router();
 const publisher = require("./targetPublisher");
 const Target = require("./models/target");
 
-const bodyParser = require('body-parser');
+router.use(express.urlencoded({ extended: true }));
 const multer = require('multer');
-const upload = multer();
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
-// for parsing multipart/form-data
-router.use(upload.array()); 
-router.use(express.static('public'));
+var fs = require('fs');
 
 //Create a target
-router.post('/',upload.fields([
-    { name: 'img', maxCount: 1 },
-]), (req, res) => {
+router.post('/', upload.single('img'), (req, res) => {
     console.log('Registering target...');
 
     const body = req.body;
 
-    console.log(body);
+    const img = req.file.buffer.toString('base64');
 
     const target = new Target({
         // Generate UID
         uid: mongoose.Types.ObjectId(),
         name: body.name,
         desc: body.desc,
-        img: body.img
+        img: img
     });
 
     target.save()
