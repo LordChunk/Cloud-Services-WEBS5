@@ -12,6 +12,8 @@ class RequestHandler {
    * @returns 
    */
   send(method, path) {
+    method = method.toLowerCase();
+
     return (req, res, next) => {
       this.circuitBreaker.fire(method, path, req.body)
         .then(response => res.status(response.status).json(response.data))
