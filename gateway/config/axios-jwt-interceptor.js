@@ -8,9 +8,15 @@ const interceptor = function (config) {
     const uid = config.headers['X-Interceptor-Uid'];
     delete config.headers['X-Interceptor-Uid'];
 
-    // Sign key and add to headers
-    const token = jwt.sign({ apiKey, uid }, process.env.JWT_SECRET);
-    config.headers.Authorization = `Bearer ${token}`;
+    // Check if uid is set and add to token if it is
+    if (uid) {
+        const token = jwt.sign({ apiKey, uid }, process.env.JWT_SECRET);
+        config.headers.Authorization = `Bearer ${token}`;
+    } else {
+        // Sign key and add to headers
+        const token = jwt.sign({ apiKey }, process.env.JWT_SECRET);
+        config.headers.Authorization = `Bearer ${token}`;
+    }
     return config;
 };
 

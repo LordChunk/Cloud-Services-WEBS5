@@ -25,10 +25,15 @@ class CircuitBreakerService {
     return new CircuitBreaker(
       // Universal function to call the endpoint using Axios
       (method, resource, body, user) => {
-        return axiosInstance[method](resource, body, {
-          headers: {
-            'X-Interceptor-Uid': user.uid
-          }});
+        // Add the user's id to the headers if they are logged in
+        if (user) {
+          return axiosInstance[method](resource, body, {
+            headers: {
+              'X-Interceptor-Uid': user.uid
+            }
+          });
+        }
+        return axiosInstance[method](resource, body);
       },
       this.options
     );
