@@ -17,7 +17,9 @@ class RequestHandler {
     return (req, res, next) => {
       this.circuitBreaker.fire(method, path, req.body)
         .then(response => res.status(response.status).json(response.data))
-        .catch(error => next(createError(error.response.status, error.message)));
+        .catch(error => {
+          next(createError(error.response.status || 500, error.message));
+        });
     }
   }
 

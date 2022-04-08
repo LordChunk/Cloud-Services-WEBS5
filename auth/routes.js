@@ -33,27 +33,11 @@ router.post('/register', (req, res) => {
       res.status(201).json(user);
     })
     .catch(err => {
-      console.log("Error registering user");
+      console.log("Error registering user", err);
       res.status(500).json({
         error: err
       });
     });
-});
-
-router.get('/users', (req, res) => {
-  console.log('Getting users...');
-  User.find()
-    .then(users => {
-      console.log("Found users");
-      res.status(200).json(users);
-    })
-    .catch(err => {
-      console.log("Error getting users");
-      res.status(500).json({
-        error: err
-      });
-    }
-  );
 });
 
 router.post('/login', (req, res) => {
@@ -90,6 +74,23 @@ router.post('/login', (req, res) => {
     })
     .catch(err => {
       console.log("Error logging in user", err);
+      res.status(500).json({
+        error: err
+      });
+    }
+  );
+});
+
+
+router.get('/users', (req, res) => {
+  console.log('Getting users...');
+  User.find()
+    .then(users => {
+      console.log("Found users");
+      res.status(200).json(users);
+    })
+    .catch(err => {
+      console.log("Error getting users");
       res.status(500).json({
         error: err
       });
