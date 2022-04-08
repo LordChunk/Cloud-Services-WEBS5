@@ -1,4 +1,3 @@
-require('dotenv').config();
 const express = require('express');
 const router = new express.Router();
 const passport = require('passport');
@@ -11,7 +10,6 @@ const requestHandler = require('../services/request-handler')
 
 
 router.post('/login', requestHandler.send('post', 'login'));
-
 router.post('/register', requestHandler.send('post', 'register'));
 
 module.exports = router    
