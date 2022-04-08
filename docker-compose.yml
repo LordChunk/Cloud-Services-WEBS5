@@ -10,7 +10,7 @@ services:
     expose:
       - 3000
     ports:
-      - "7073:3000"
+      - "8073:3000"
     environment:
       MONGO_URL: "mongodb://mongodb_like:27017/like"
       JWT_SECRET: secret # secret key for jwt
@@ -20,7 +20,7 @@ services:
     expose:
       - 27017
     ports:
-      - "8073:27017"
+      - "7073:27017"
     volumes:
       - data_like:/data/db
     environment:
