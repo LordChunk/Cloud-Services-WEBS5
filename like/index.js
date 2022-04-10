@@ -13,9 +13,11 @@ app.use(express.json());
 passport.use(shared.JwtStrategy.InternalStrategy);
 app.use(passport.initialize());
 
+// Register RabbitMQ jobs
+require('./services/target-tracking');
+
 // Register routes
 app.use('/', passport.authenticate('jwt', {session: false}), require('./routes'));
-
 
 app.listen(port,  () => {
   console.log('Started service at: ' + new Date().toLocaleString())
