@@ -36,7 +36,6 @@ router.post('/', upload.single('img'), (req, res) => {
 
     target.save()
         .then(target => {
-            //todo Fix rabbitmq
             publisher(target._id);
             res.status(201).json(target);
         })
