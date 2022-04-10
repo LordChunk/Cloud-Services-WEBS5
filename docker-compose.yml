@@ -5,6 +5,7 @@ services:
     image: cloud-like
     depends_on:
     - mongodb_like
+    - rabbitmq
     build: 
       context: .
       dockerfile: ./like/Dockerfile
@@ -14,7 +15,7 @@ services:
       - "8073:3000"
     environment:
       MONGO_URL: "mongodb://mongodb_like:27017/like"
-      RABBIT_ENDPOINT: "amqp://localhost:5672"
+      RABBIT_ENDPOINT: "amqp://rabbitmq"
       JWT_SECRET: secret # secret key for jwt
       API_KEY: secret_api_key
   mongodb_like:
@@ -32,6 +33,7 @@ services:
     image: cloud-target
     depends_on:
     - mongodb_target
+    - rabbitmq
     build: 
       context: .
       dockerfile: ./target/Dockerfile
@@ -41,7 +43,7 @@ services:
       - "8072:3000"
     environment:
       MONGO_URL: "mongodb://mongodb_target:27017/target"
-      RABBIT_ENDPOINT: "amqp://localhost:5672"
+      RABBIT_ENDPOINT: "amqp://rabbitmq"
       JWT_SECRET: secret # secret key for jwt
       API_KEY: secret_api_key
   mongodb_target:
@@ -104,11 +106,17 @@ services:
     expose:
       - 5672
     ports:
-      - 5672:5672
-      - 15672:15672
+      - "5672:5672"
+      - "15672:15672"
     volumes:
       - data_rabbitmq:/var/lib/rabbitmq
-    # environment:
+    # Health check
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
 
   # Logging service
   prometheus:
