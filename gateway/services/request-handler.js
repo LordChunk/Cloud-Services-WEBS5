@@ -18,8 +18,13 @@ class RequestHandler {
       this.circuitBreaker.fire(method, path || req.url, req.body, req.user)
         .then(response => res.status(response.status).json(response.data))
         .catch(error => {
+          // Return error from response if it exists
+          if (error.response) {
+            res.status(error.response.status).send(error.response.data);
+          }
+          // Return error from circuit breaker if it exists
           next(createError(
-            error.response?.status || 500,
+            error.status || 500,
             error.message || 'Internal server error',
           ))
         });
