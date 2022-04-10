@@ -3,8 +3,8 @@ const ObjectId = Mongoose.Schema.Types.ObjectId;
 
 
 const challengerSchema = new Mongoose.Schema({
-    creatorid:{type: ObjectId, required: true},
-    targetid:{type: ObjectId, required: true},
+    creator_id:{type: ObjectId, required: true},
+    target_id:{type: ObjectId, required: true},
     img:{type: String, required: true},
 })
 

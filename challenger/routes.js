@@ -31,13 +31,10 @@ router.post('/',(req, res) => {
         return;
     }
 
-    console.log("user = ", req.user);
-
     // create a new challenger
     const challenger = new Challenger({
-        //TODO fix userid
-        creatorid: req.user.uid,
-        targetid: body.targetid,
+        creator_id: req.user.uid,
+        target_id: body.target_id,
         img: body.img
     });
 
