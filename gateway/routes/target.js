@@ -8,5 +8,7 @@ const requestHandler = require('../services/request-handler')
     .createNewRequestHandler(circuitBreaker);
 
 // Register routes below
+router.post('/', requestHandler.send('post'));
+router.get('/', requestHandler.send('post'));
 
 module.exports = router    
