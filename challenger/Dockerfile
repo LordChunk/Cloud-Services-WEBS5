@@ -7,7 +7,7 @@ RUN npm i
 
 # Copy project files
 WORKDIR /app  
-COPY ./target /app
+COPY ./challenger /app
 RUN npm i
 
 EXPOSE 3000  
