@@ -25,11 +25,6 @@ shared.RabbitMQ.connect(async (connection) => {
 // Setup prometheus
 app.use(shared.PrometheusConfig);
 
-// JWT header injection setup
-const { default: axios } = require('axios');
-axios.interceptors.request.use(shared.Interceptors.request);
-axios.interceptors.response.use(shared.Interceptors.internalResponse);
-
 // Register routes
 app.use('/', require('./routes'));
 
