@@ -11,19 +11,11 @@ const router = new express.Router();
 const publisher = require("./services/target-publisher");
 const Target = require("./models/target");
 
-router.use(express.urlencoded({ extended: true }));
-const multer = require('multer');
-const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
-
-
 //Create a target
-router.post('/', upload.single('img'), (req, res) => {
+router.post('/', (req, res) => {
     console.log('Registering target...');
 
     const body = req.body;
-
-    const img = req.file.buffer.toString('base64');
 
     const target = new Target({
         name: body.name,
@@ -31,7 +23,7 @@ router.post('/', upload.single('img'), (req, res) => {
         lat: body.lat,
         long: body.long,
         radius: body.radius,
-        img: img
+        img: body.img
     });
 
     target.save()
@@ -50,9 +42,9 @@ router.post('/', upload.single('img'), (req, res) => {
 
 //Get all targets
 router.get('/', async (req, res) => {
-    console.log("yes");
     try {
-        const targets = await Target.find();
+        // Get all targets
+        const targets = await Target.find({});
         res.send(targets);
     }catch (error) {
         res.status(500).send(error);

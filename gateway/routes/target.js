@@ -9,6 +9,7 @@ const requestHandler = require('../services/request-handler')
 
 // Register routes below
 router.post('/', requestHandler.send('post'));
-router.get('/', requestHandler.send('post'));
+router.get('/', requestHandler.send('get'));
+router.get('/:id', requestHandler.send('get'));
 
 module.exports = router    
