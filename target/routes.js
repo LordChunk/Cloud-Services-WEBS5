@@ -16,7 +16,6 @@ const multer = require('multer');
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-var fs = require('fs');
 
 //Create a target
 router.post('/', upload.single('img'), (req, res) => {
