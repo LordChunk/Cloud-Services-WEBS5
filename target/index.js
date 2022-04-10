@@ -19,7 +19,7 @@ app.use('/', require('./routes'));
 
 app.listen(port,  () => {
   console.log('Started service at: ' + new Date().toLocaleString())
-  console.log('Gateway is up on http://localhost:' + port)
+  console.log('Target service is up on http://localhost:' + port)
 });
 
 module.exports = app;

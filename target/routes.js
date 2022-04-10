@@ -35,8 +35,6 @@ router.post('/', upload.single('img'), (req, res) => {
         img: img
     });
 
-    console.log(target._id);
-
     target.save()
         .then(target => {
             //todo Fix rabbitmq
