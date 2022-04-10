@@ -1,3 +1,4 @@
+version: "3.8"
 services:
  # Challenger
   challenger:
@@ -17,20 +18,49 @@ services:
       JWT_SECRET: secret # secret key for jwt
       API_KEY: secret_api_key
   mongodb_challenger:
+   image: mongo
+  expose:
+    - 27017
+  ports:
+    - "7074:27017"
+  volumes:
+    - data_challenger:/data/db
+  environment:
+    - MONGO_INITDB_DATABASE=challenger
+  # Like
+  like:
+    image: cloud-like
+    depends_on:
+    - mongodb_like
+    - rabbitmq
+    build: 
+      context: .
+      dockerfile: ./like/Dockerfile
+    expose:
+      - 3000
+    ports:
+      - "8073:3000"
+    environment:
+      MONGO_URL: "mongodb://mongodb_like:27017/like"
+      RABBIT_ENDPOINT: "amqp://rabbitmq"
+      JWT_SECRET: secret # secret key for jwt
+      API_KEY: secret_api_key
+  mongodb_like:
     image: mongo
     expose:
       - 27017
     ports:
-      - "7074:27017"
+      - "7073:27017"
     volumes:
-      - data_target:/data/db
+      - data_like:/data/db
     environment:
-      - MONGO_INITDB_DATABASE=challenger
+      - MONGO_INITDB_DATABASE=like
   # Target
   target:
     image: cloud-target
     depends_on:
     - mongodb_target
+    - rabbitmq
     build: 
       context: .
       dockerfile: ./target/Dockerfile
@@ -40,7 +70,7 @@ services:
       - "8072:3000"
     environment:
       MONGO_URL: "mongodb://mongodb_target:27017/target"
-      RABBIT_ENDPOINT: "amqp://admin:admin@rabbitmq:5672"
+      RABBIT_ENDPOINT: "amqp://rabbitmq"
       JWT_SECRET: secret # secret key for jwt
       API_KEY: secret_api_key
   mongodb_target:
@@ -94,6 +124,7 @@ services:
      - API_KEY=secret_api_key # API key for backend services
     # List all the services that the gateway should be able to access
      - AUTH_ENDPOINT=http://auth:3000
+     - LIKE_ENDPOINT=http://like:3000
      - TARGET_ENDPOINT=http://target:3000
 
   # Service bus
@@ -102,13 +133,17 @@ services:
     expose:
       - 5672
     ports:
-      - 5672:5672
-      - 15672:15672
+      - "5672:5672"
+      - "15672:15672"
     volumes:
       - data_rabbitmq:/var/lib/rabbitmq
-    environment:
-      - RABBITMQ_DEFAULT_USER=admin
-      - RABBITMQ_DEFAULT_PASS=admin
+    # Health check
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
 
   # Logging service
   prometheus:
@@ -125,6 +160,8 @@ services:
     ports:
       - 3001:3000
 volumes:
+  data_challenger:
+  data_like:
   data_target:
   data_auth:
   data_rabbitmq:

@@ -28,14 +28,6 @@
     "opossum": "^6.3.0",
     "passport": "^0.5.2",
     "passport-jwt": "^4.0.0",
-    "prom-client": "^14.0.1",
-    "supertest": "^6.2.2"
-  },
-  "jest": {
-    "testEnvironment": "node",
-    "coveragePathIgnorePatterns": [
-      "/node_modules/"
-    ],
-    "preset": "@shelf/jest-mongodb"
+    "prom-client": "^14.0.1"
   }
 }

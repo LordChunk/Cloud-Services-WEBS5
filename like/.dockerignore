@@ -1,0 +1,8 @@
+# node modules
+node_modules
+
+.env
+
+# log files and compressed files
+*.log
+*.gz
