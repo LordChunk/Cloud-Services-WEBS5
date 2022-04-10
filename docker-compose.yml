@@ -18,15 +18,15 @@ services:
       JWT_SECRET: secret # secret key for jwt
       API_KEY: secret_api_key
   mongodb_challenger:
-   image: mongo
-  expose:
-    - 27017
-  ports:
-    - "7074:27017"
-  volumes:
-    - data_challenger:/data/db
-  environment:
-    - MONGO_INITDB_DATABASE=challenger
+    image: mongo
+    expose:
+      - 27017
+    ports:
+      - "7074:27017"
+    volumes:
+      - data_challenger:/data/db
+    environment:
+      - MONGO_INITDB_DATABASE=challenger
   # Like
   like:
     image: cloud-like
@@ -126,6 +126,7 @@ services:
      - AUTH_ENDPOINT=http://auth:3000
      - LIKE_ENDPOINT=http://like:3000
      - TARGET_ENDPOINT=http://target:3000
+     - CHALLENGER_ENDPOINT=http://challenger:3000
 
   # Service bus
   rabbitmq:
