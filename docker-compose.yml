@@ -1,4 +1,31 @@
 services:
+ # Challenger
+  challenger:
+    image: cloud-challenger
+    depends_on:
+    - mongodb_challenger
+    build: 
+      context: .
+      dockerfile: ./challenger/Dockerfile
+    expose:
+      - 3000
+    ports:
+      - "8074:3000"
+    environment:
+      MONGO_URL: "mongodb://mongodb_challenger:27017/challenger"
+      RABBIT_ENDPOINT: "amqp://admin:admin@rabbitmq:5672"
+      JWT_SECRET: secret # secret key for jwt
+      API_KEY: secret_api_key
+  mongodb_challenger:
+    image: mongo
+    expose:
+      - 27017
+    ports:
+      - "7074:27017"
+    volumes:
+      - data_target:/data/db
+    environment:
+      - MONGO_INITDB_DATABASE=challenger
   # Target
   target:
     image: cloud-target
