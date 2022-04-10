@@ -1,6 +1,7 @@
 const Mongoose = require('mongoose');
 const ObjectId = Mongoose.Schema.Types.ObjectId;
 const FKHelper = require('cloud-shared/helpers/foreign-key');
+const Target = require('./target');
 
 // Like schema for a target
 const likeSchema = new Mongoose.Schema({

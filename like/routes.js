@@ -17,11 +17,9 @@ router.post('/:target_id', async (req, res, next) => {
   // Check if user has already liked the target and delete it if so otherwise create a new like
   const user_id = req.user.uid;
   const target_id = req.params.target_id;
-
-  console.log(target_id);
   
   // Check if target exists
-  const target = await Target.findById(target_id).exec();
+  const target = targetFinder(target_id);
   if (!target) {
     return next(createError(400, 'Cannot like a non-existing target'));
   }
@@ -39,5 +37,26 @@ router.post('/:target_id', async (req, res, next) => {
       }
     })
 });
+
+// Get the number of likes for a target
+router.get('/:target_id/count', async (req, res, next) => {
+  const target_id = req.params.target_id;
+
+  // Check if target exists
+  const target = targetFinder(target_id);
+  if (!target) {
+    return next(createError(400, 'Cannot get likes for a non-existing target'));
+  }
+
+  Like.count({ target_id })
+    .then(count => res.status(200).json({ count }))
+    .catch(err => next(err));
+});
+
+
+const targetFinder = async (target_id) => {
+  return await Target.findById(target_id).exec();
+}
+  
 
 module.exports = router;

@@ -10,5 +10,6 @@ const requestHandler = require('../services/request-handler')
 
 // Register routes
 router.post('/:target_id', requestHandler.send('post'));
+router.get('/:target_id/count', requestHandler.send('get'));
 
 module.exports = router
