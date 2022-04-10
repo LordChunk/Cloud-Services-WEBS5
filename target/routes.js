@@ -27,28 +27,33 @@ router.post('/', upload.single('img'), (req, res) => {
     const img = req.file.buffer.toString('base64');
 
     const target = new Target({
-        // Generate UID
-        uid: mongoose.Types.ObjectId(),
         name: body.name,
         desc: body.desc,
+        lat: body.lat,
+        long: body.long,
+        radius: body.radius,
         img: img
     });
+
+    console.log(target._id);
 
     target.save()
         .then(target => {
             //todo Fix rabbitmq
-            //publisher.publishTarget(target);
+            publisher(target._id);
             res.status(201).json(target);
         })
         .catch(err => {
             res.status(500).json({
                 error: err
             });
+            console.log(err);
         });
 });
 
 //Get all targets
 router.get('/', async (req, res) => {
+    console.log("yes");
     try {
         const targets = await Target.find();
         res.send(targets);
