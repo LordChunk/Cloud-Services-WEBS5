@@ -28,8 +28,7 @@ router.post('/', (req, res) => {
 
     target.save()
         .then(target => {
-            //todo Fix rabbitmq
-            publisher(target._id);
+            publisher(target);
             res.status(201).json(target);
         })
         .catch(err => {

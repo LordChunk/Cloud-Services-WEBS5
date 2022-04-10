@@ -25,6 +25,11 @@ router.post('/register', (req, res) => {
   console.log('Registering user...');	
   const body = req.body;
   const salt = bcrypt.genSaltSync(10);
+
+  console.log("password = ", body.password);
+  console.log("hash = ", salt);
+
+
   const user = new User({
     // Generate UID
     email: body.email,
