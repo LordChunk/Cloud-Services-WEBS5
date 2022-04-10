@@ -18,6 +18,9 @@ class TargetTrackingService  {
   async start(connection) {
     const channel = await connection.createChannel();
 
+    // Declare exchange
+    await channel.assertExchange(Exchanges.Target, 'fanout', { durable: true });
+
     // Subscribe to queue for Target exchange
     await channel.assertQueue(Queues.TargetCreate, { durable: true });
     await channel.bindQueue(Queues.TargetCreate, Exchanges.Target, '#');
