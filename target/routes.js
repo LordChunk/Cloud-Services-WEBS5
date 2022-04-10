@@ -36,7 +36,7 @@ router.post('/', upload.single('img'), (req, res) => {
 
     target.save()
         .then(target => {
-            publisher(target._id);
+            publisher(target);
             res.status(201).json(target);
         })
         .catch(err => {
@@ -49,7 +49,6 @@ router.post('/', upload.single('img'), (req, res) => {
 
 //Get all targets
 router.get('/', async (req, res) => {
-    console.log("yes");
     try {
         const targets = await Target.find();
         res.send(targets);
