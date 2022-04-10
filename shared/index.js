@@ -1,6 +1,7 @@
 // Export dependencies 
 module.exports = {
   JwtStrategy: require('./config/jwt-strategy'),	
-  Database: require('./config/database'),
-  RabbitMQ: require('./config/rabbitmq'),
+  Exchanges: require('./config/exchanges'),
+  Database: require('./services/database'),
+  RabbitMQ: require('./services/rabbitmq'),
 }

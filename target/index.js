@@ -13,9 +13,17 @@ app.use(express.json());
 passport.use(shared.JwtStrategy.InternalStrategy);
 app.use(passport.initialize());
 
+// Register RabbitMQ queues and exchanges
+shared.RabbitMQ.connect(async (connection) => {
+  const channel = await connection.createChannel();
+  
+  channel.assertExchange(shared.Exchanges.Target, 'fanout', {
+    durable: true
+  });
+});
+
 // Register routes
 app.use('/', require('./routes'));
-
 
 app.listen(port,  () => {
   console.log('Started service at: ' + new Date().toLocaleString())
