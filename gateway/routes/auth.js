@@ -9,10 +9,8 @@ const circuitBreaker = require('../services/circuit-breaker')
 const requestHandler = require('../services/request-handler')
     .createNewRequestHandler(circuitBreaker);
 
-    
 passport.use(GatewayStrategy);
 router.use(passport.initialize());
-
 
 router.post('/login', requestHandler.send('post', 'login'));
 router.post('/register', requestHandler.send('post', 'register'));

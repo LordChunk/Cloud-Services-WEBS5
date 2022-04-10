@@ -67,6 +67,7 @@ services:
      - API_KEY=secret_api_key # API key for backend services
     # List all the services that the gateway should be able to access
      - AUTH_ENDPOINT=http://auth:3000
+     - TARGET_ENDPOINT=http://target:3000
 
   # Service bus
   rabbitmq:
