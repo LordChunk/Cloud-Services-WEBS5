@@ -13,6 +13,7 @@ services:
       - "8072:3000"
     environment:
       MONGO_URL: "mongodb://mongodb_target:27017/target"
+      RABBIT_ENDPOINT: "amqp://admin:admin@rabbitmq:5672"
       JWT_SECRET: secret # secret key for jwt
       API_KEY: secret_api_key
   mongodb_target:
