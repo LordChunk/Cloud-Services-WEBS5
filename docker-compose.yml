@@ -57,6 +57,8 @@ services:
     build:
       context: .
       dockerfile: ./gateway/Dockerfile
+    expose:
+      - 3000
     ports:
       - "8070:3000" # external port: internal port
     environment:
