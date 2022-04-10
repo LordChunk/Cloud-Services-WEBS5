@@ -27,17 +27,17 @@ router.post('/', upload.single('img'), (req, res) => {
     const img = req.file.buffer.toString('base64');
 
     //check if target exists
-    // const target = Target.findOne({
-    //     _id: body.targetid
-    // });
+    const target = Target.findOne({
+        _id: body.targetid
+    });
 
     // if target doesnt exist return error
-    // if(target === null) {
-    //     res.status(400).json({
-    //         error: "Target does not exist"
-    //     });
-    //     return;
-    // }
+    if(target === null) {
+        res.status(400).json({
+            error: "Target does not exist"
+        });
+        return;
+    }
 
     console.log("user = ", req.user);
 
