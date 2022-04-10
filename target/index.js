@@ -26,7 +26,9 @@ shared.RabbitMQ().connect(async (connection) => {
 app.use(shared.PrometheusConfig);
 
 // Register routes
+app.use('/', passport.authenticate('jwt', {session: false}), require('./routes'));
 app.use('/', require('./routes'));
+
 
 app.listen(port,  () => {
   console.log('Started service at: ' + new Date().toLocaleString())
