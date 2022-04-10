@@ -1,5 +1,6 @@
-const axios = require('axios');
+const { default: axios } = require('axios');
 const CircuitBreaker = require('opossum');
+const Interceptor = require('../config/axios-jwt-interceptor');
 
 // This singleton service is used to create a CircuitBreaker instance for each microservice
 class CircuitBreakerService {
@@ -19,9 +20,19 @@ class CircuitBreakerService {
       }
     });
 
+    axiosInstance.interceptors.request.use(Interceptor);
+
     return new CircuitBreaker(
       // Universal function to call the endpoint using Axios
-      (method, resource, body) => {
+      (method, resource, body, user) => {
+        // Add the user's id to the headers if they are logged in
+        if (user) {
+          return axiosInstance[method](resource, body, {
+            headers: {
+              'X-Interceptor-Uid': user.uid
+            }
+          });
+        }
         return axiosInstance[method](resource, body);
       },
       this.options

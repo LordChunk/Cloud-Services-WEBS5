@@ -6,10 +6,21 @@ const options = {
   secretOrKey: process.env.JWT_SECRET
 };
 
-const strategy = new JwtStrategy(options, (jwt_payload, done) => {
-  console.log('payload received', jwt_payload);
-  // jwt_payload
-  done(null, jwt_payload);
+const InternalStrategy = new JwtStrategy(options, (jwt_payload, done) => {
+  // Check if the apiKey is valid or return 401
+  if (jwt_payload.apiKey === process.env.API_KEY) {
+    // Extract user id from payload
+    return done(null, {
+      uid: jwt_payload.uid
+    });
+  } else {
+    return done(null, false);
+  }
 });
 
-module.exports = strategy;
+
+
+module.exports =  {
+  InternalStrategy,
+  options
+};
