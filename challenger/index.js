@@ -32,7 +32,7 @@ app.use('/', passport.authenticate('jwt', {session: false}), require('./routes')
 
 app.listen(port,  () => {
   console.log('Started service at: ' + new Date().toLocaleString())
-  console.log('Target service is up on http://localhost:' + port)
+  console.log('Challenger service is up on http://localhost:' + port)
 });
 
 module.exports = app;

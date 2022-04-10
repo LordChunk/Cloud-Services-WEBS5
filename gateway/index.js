@@ -26,6 +26,7 @@ axios.interceptors.request.use(Interceptor);
 app.use('/auth', require('./routes/auth'));
 app.use('/like', passport.authenticate('jwt', {session: false}), require('./routes/like'));
 app.use('/target', passport.authenticate('jwt', { session: false }), require('./routes/target'));
+app.use('/challenger', passport.authenticate('jwt', { session: false }), require('./routes/challenger'));
 
 app.listen(port, () => {
     console.log('Gateway is up on http://localhost:' + port);

@@ -11,21 +11,13 @@ const router = new express.Router();
 const Challenger = require("./models/challenger");
 const Target = require("./models/target");
 
-router.use(express.urlencoded({ extended: true }));
-const multer = require('multer');
-const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
-
-
 //Create a target
-router.post('/', upload.single('img'), (req, res) => {
+router.post('/',(req, res) => {
     console.log('Registering challenger...');
 
     // get the data from the request
     const body = req.body;
-
-    const img = req.file.buffer.toString('base64');
-
+    
     //check if target exists
     const target = Target.findOne({
         _id: body.targetid
@@ -46,7 +38,7 @@ router.post('/', upload.single('img'), (req, res) => {
         //TODO fix userid
         creatorid: req.user.uid,
         targetid: body.targetid,
-        img: img
+        img: body.img
     });
 
     // save the challenger
