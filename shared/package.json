@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@shelf/jest-mongodb": "^2.2.0",
+    "amqplib": "^0.8.0",
     "axios": "^0.26.1",
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",

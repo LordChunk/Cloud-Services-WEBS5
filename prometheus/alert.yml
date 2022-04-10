@@ -1,6 +1,15 @@
 groups:
   - name: StandardAlerts
     rules: 
-      - alert: "On API down"
-        expr: up{job="web"} < 1
+      - alert: "On Authentication down"
+        expr: up{job="auth"} < 1
+        for: 20s
+      - alert: "On Gateway down"
+        expr: up{job="gateway"} < 1
+        for: 20s
+      - alert: "On Like down"
+        expr: up{job="like"} < 1
+        for: 20s
+      - alert: "On Target down"
+        expr: up{job="target"} < 1
         for: 20s

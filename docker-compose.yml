@@ -39,6 +39,7 @@ services:
       - "8072:3000"
     environment:
       MONGO_URL: "mongodb://mongodb_target:27017/target"
+      RABBIT_ENDPOINT: "amqp://admin:admin@rabbitmq:5672"
       JWT_SECRET: secret # secret key for jwt
       API_KEY: secret_api_key
   mongodb_target:
@@ -83,6 +84,8 @@ services:
     build:
       context: .
       dockerfile: ./gateway/Dockerfile
+    expose:
+      - 3000
     ports:
       - "8070:3000" # external port: internal port
     environment:
@@ -90,6 +93,7 @@ services:
      - API_KEY=secret_api_key # API key for backend services
     # List all the services that the gateway should be able to access
      - AUTH_ENDPOINT=http://auth:3000
+     - TARGET_ENDPOINT=http://target:3000
 
   # Service bus
   rabbitmq:
@@ -97,6 +101,7 @@ services:
     expose:
       - 5672
     ports:
+      - 5672:5672
       - 15672:15672
     volumes:
       - data_rabbitmq:/var/lib/rabbitmq
