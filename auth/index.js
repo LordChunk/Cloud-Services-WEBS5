@@ -13,12 +13,14 @@ app.use(express.json());
 passport.use(shared.JwtStrategy.InternalStrategy);
 app.use(passport.initialize());
 
+// Setup prometheus
+app.use(shared.PrometheusConfig);
+
 // Register routes
 app.use('/', passport.authenticate('jwt', {session: false}), require('./routes'));
 
-
 app.listen(port,  () => {
-  console.log('Started service at: ' + new Date().toLocaleString())
+  console.log('Started auth service at: ' + new Date().toLocaleString())
   console.log('Authentication service is up on http://localhost:' + port)
 });
 

@@ -13,6 +13,9 @@ app.use(express.json());
 passport.use(shared.JwtStrategy);
 app.use(passport.initialize());
 
+// Setup prometheus
+app.use(shared.PrometheusConfig);
+
 // JWT header injection setup
 const { default: axios } = require('axios');
 axios.interceptors.request.use(shared.Interceptors.request);
