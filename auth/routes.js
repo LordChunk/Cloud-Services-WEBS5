@@ -54,7 +54,7 @@ router.post('/login', (req, res) => {
     .select('+hash +salt')
     .then(user => {
       if (!user) {
-        return res.status(401).json({
+        return res.status(400).json({
           error: 'Invalid email or password'
         });
       }
@@ -74,7 +74,7 @@ router.post('/login', (req, res) => {
       user.hash = undefined;
       user.salt = undefined;
       // Send user with token
-      res.status(200).json({
+      res.status(201).json({
         user: user,
         token: token
       });

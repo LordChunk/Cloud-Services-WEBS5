@@ -21,18 +21,18 @@ router.post('/:target_id', async (req, res, next) => {
   // Check if target exists
   const target = await Target.findById(target_id).exec();
   if (!target) {
-    return next(createError(401, 'Cannot like a non-existing target'));
+    return next(createError(400, 'Cannot like a non-existing target'));
   }
 
   Like.findOne({ user_id, target_id })
     .then(like => {
       if (like) {
         like.remove()
-          .then(() => res.status(200).json({ message: 'Like removed' }))
+          .then(() => res.status(201).json({ message: 'Like removed' }))
           .catch(err => next(err));
       } else {
         new Like({ user_id, target_id }).save()
-          .then(() => res.status(200).json({ message: 'Like added' }))
+          .then(() => res.status(201).json({ message: 'Like added' }))
           .catch(err => next(err));
       }
     })
