@@ -8,7 +8,7 @@ const express = require('express');
 const router = new express.Router();
 
 // Import route specific dependencies
-const publisher = require("./targetPublisher");
+const publisher = require("./services/target-publisher");
 const Target = require("./models/target");
 
 router.use(express.urlencoded({ extended: true }));
