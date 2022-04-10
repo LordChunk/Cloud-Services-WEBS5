@@ -1,3 +1,4 @@
+version: "3.8"
 services:
   # Like
   like:
@@ -13,6 +14,7 @@ services:
       - "8073:3000"
     environment:
       MONGO_URL: "mongodb://mongodb_like:27017/like"
+      RABBIT_ENDPOINT: "amqp://localhost:5672"
       JWT_SECRET: secret # secret key for jwt
       API_KEY: secret_api_key
   mongodb_like:
@@ -39,7 +41,7 @@ services:
       - "8072:3000"
     environment:
       MONGO_URL: "mongodb://mongodb_target:27017/target"
-      RABBIT_ENDPOINT: "amqp://admin:admin@rabbitmq:5672"
+      RABBIT_ENDPOINT: "amqp://localhost:5672"
       JWT_SECRET: secret # secret key for jwt
       API_KEY: secret_api_key
   mongodb_target:
@@ -106,9 +108,7 @@ services:
       - 15672:15672
     volumes:
       - data_rabbitmq:/var/lib/rabbitmq
-    environment:
-      - RABBITMQ_DEFAULT_USER=admin
-      - RABBITMQ_DEFAULT_PASS=admin
+    # environment:
 
   # Logging service
   prometheus:

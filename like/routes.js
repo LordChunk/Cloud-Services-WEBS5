@@ -17,6 +17,8 @@ router.post('/:target_id', async (req, res, next) => {
   // Check if user has already liked the target and delete it if so otherwise create a new like
   const user_id = req.user.uid;
   const target_id = req.params.target_id;
+
+  console.log(target_id);
   
   // Check if target exists
   const target = await Target.findById(target_id).exec();

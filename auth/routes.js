@@ -41,7 +41,7 @@ router.post('/register', (req, res) => {
     })
     .catch(err => {
       console.log("Error registering user", err);
-      res.status(500).json({
+      res.status(400).json({
         error: err
       });
     });

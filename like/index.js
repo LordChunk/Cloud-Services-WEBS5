@@ -21,7 +21,7 @@ app.use('/', passport.authenticate('jwt', {session: false}), require('./routes')
 
 app.listen(port,  () => {
   console.log('Started service at: ' + new Date().toLocaleString())
-  console.log('Authentication service is up on http://localhost:' + port)
+  console.log('Like service is up on http://localhost:' + port)
 });
 
 module.exports = app;
