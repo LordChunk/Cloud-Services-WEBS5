@@ -10,7 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 // Passport setup
-passport.use(shared.JwtStrategy);
+passport.use(shared.JwtStrategy.InternalStrategy);
 app.use(passport.initialize());
 
 // Register routes
