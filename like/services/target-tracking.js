@@ -35,6 +35,9 @@ class TargetTrackingService  {
 
       console.log('Target created: ' + targetId);
       await target.save();
+
+      // Acknowledge message
+      channel.ack(message);
     });
   }
 }
