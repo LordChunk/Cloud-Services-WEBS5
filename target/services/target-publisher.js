@@ -8,7 +8,8 @@ function createdTarget(target) {
   RabbitMQ().connect(async (connection) => {
     const channel = await connection.createChannel();
 
-    channel.publish(Exchanges.Target, '', Buffer.from(target));
+    // Publish the target to the target-created exchange
+    await channel.publish(Exchanges.Target, '', Buffer.from(JSON.stringify(target)));
   });
 }
 

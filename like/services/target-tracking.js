@@ -25,7 +25,8 @@ class TargetTrackingService  {
     await channel.assertQueue(Queues.TargetCreate, { durable: true });
     await channel.bindQueue(Queues.TargetCreate, Exchanges.Target, '#');
     await channel.consume(Queues.TargetCreate, async (message) => {
-      const targetId = message.content.toString();
+      // Get id from message content
+      const targetId = JSON.parse(message.content.toString())._id;
       
       // Create new target in database
       const target = new Target({

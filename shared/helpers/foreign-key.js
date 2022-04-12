@@ -2,7 +2,7 @@
 
 module.exports = (model, id) => {
   return new Promise((resolve, reject) => {
-    model.findOne({ id: id }, (err, result) => {
+    model.findOne({ id }, (err, result) => {
       if (result) {
         return resolve(true)
       } else
